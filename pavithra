@@ -1,0 +1,105 @@
+import java.util.*;
+
+public class Main {
+
+    private static int getValidInt(Scanner sc, String prompt, int min, int max) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                int value = Integer.parseInt(sc.nextLine());
+                if (value < min || value > max) {
+                    System.out.println("Value must be between " + min + " and " + max);
+                    continue;
+                }
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+
+    private static int[][] generateGrid(int n) {
+        int[][] grid = new int[n][n];
+        int[] evens = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+        Random rand = new Random();
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                grid[i][j] = evens[rand.nextInt(evens.length)];
+            }
+        }
+        return grid;
+    }
+
+    private static void displayGrid(int[][] grid, Integer highlight) {
+        int n = grid.length;
+
+        System.out.print("     ");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("%02d ", i);
+        }
+        System.out.println();
+
+        System.out.print("   +");
+        for (int i = 0; i < n; i++) {
+            System.out.print("----+");
+        }
+        System.out.println();
+
+        for (int r = 0; r < n; r++) {
+            System.out.printf("%02d |", r);
+
+            for (int c = 0; c < n; c++) {
+                int value = grid[r][c];
+
+                if (highlight != null && value == highlight) {
+                    System.out.printf("[%2d]|", value);
+                } else {
+                    System.out.printf(" %2d |", value);
+                }
+            }
+            System.out.println();
+
+            System.out.print("   +");
+            for (int i = 0; i < n; i++) {
+                System.out.print("----+");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Example A:");
+        System.out.println("Step 1:");
+
+        int n = getValidInt(sc, "Enter array size (for NxN array): ", 1, 100);
+
+        int[][] grid = generateGrid(n);
+
+        System.out.println("\nGenerated 2D array:");
+        displayGrid(grid, null);
+
+  
+        System.out.println("\nEnter a number to highlight (even number 2–20): ");
+        int x = getValidInt(sc, "", 2, 20);
+
+        if (x % 2 != 0) {
+            System.out.println("Not an even number. Exiting.");
+            return;
+        }
+
+        System.out.println("\nArray with " + x + " highlighted:");
+        displayGrid(grid, x);
+
+        int count = 0;
+        for (int[] row : grid) {
+            for (int val : row) {
+                if (val == x) count++;
+            }
+        }
+
+        System.out.println("\nNumber " + x + " appeared " + count + " time(s)");
+    }
+}
