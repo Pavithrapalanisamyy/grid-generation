@@ -1,7 +1,5 @@
 import java.util.*;
-
 public class Main {
-
     private static int getValidInt(Scanner sc, String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
